@@ -1,9 +1,29 @@
-import React from 'react'
+'use client'
+import { useRouter } from 'next/navigation'
+import React, { useState } from 'react'
+import News from './News'
+
 
 const RightSideBar = () => {
+  const[input , setInput]=useState('')
+  const route=useRouter()
+  const handleSubmit=(e)=>{
+    e.preventDefault()
+    if(!input.trim()) return ;
+    route.push(`/search/${input}`);
+    
+
+
+  }
   return (
-    <div>
-      RightSideBar
+    <div className='sticky top-0 bg-white py-2'>
+      <form onSubmit={handleSubmit}>
+        <input type="text" placeholder='Search' 
+        value={input}
+        onChange={(e)=>setInput(e.target.value)} 
+        className='bg-gray-100 border border-gray-200 rounded-3xl text-sm w-full px-4 py-2'/>
+      </form>
+      <News/>
     </div>
   )
 }
