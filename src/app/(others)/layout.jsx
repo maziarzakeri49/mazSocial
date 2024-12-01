@@ -1,10 +1,10 @@
-import LeftSideBar from "@/components/LeftSideBar"
-import RightSideBar from "@/components/RightSideBar"
-
+import LeftSideBar from "../../components/LeftSideBar"
+import RightSideBar from "../../components/RightSideBar"
+import Loader from '../../components/Loader'
 import localFont from "next/font/local";
 import ".././globals.css";
 import { ClerkProvider, ClerkLoaded, ClerkLoading } from "@clerk/nextjs";
-import Loader from "@/components/Loader";
+
 
 const geistSans = localFont({
   src: ".././fonts/GeistVF.woff",
@@ -30,7 +30,8 @@ export default function RootLayout({ children }) {
 antialiased`}
         >
           <ClerkLoading>
-            <Loader />
+            <Loader/>
+            
           </ClerkLoading>
           <ClerkLoaded>
 

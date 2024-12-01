@@ -1,4 +1,4 @@
-import Loader from "@/components/Loader";
+import Loader from "../../components/Loader";
 import { ClerkProvider ,ClerkLoading ,ClerkLoaded } from "@clerk/nextjs";
 import ".././globals.css";
 export const metadata = {

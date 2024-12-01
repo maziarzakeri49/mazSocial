@@ -2,6 +2,7 @@ import Link from 'next/link';
 import React from 'react'
 import { TbLetterZ } from "react-icons/tb";
 import { HiHome } from "react-icons/hi";
+import { SignedIn , SignedOut , SignInButton,SignOutButton} from '@clerk/nextjs';
 
 const LeftSideBar = () => {
   return (
@@ -14,7 +15,14 @@ const LeftSideBar = () => {
       <HiHome  className='w-7 h-7'/>
       <span className='font-bold hidden xl:inline'>Home</span>
       </Link>
-      <button className='bg-blue-400 text-white rounded-full hover:brightness-95 transition-all duration-200 w-48 h-9 shadow-md hidden xl:inline'>Sign In</button>
+      <button className='bg-blue-400 text-white rounded-full hover:brightness-95 transition-all duration-200 w-48 h-9 shadow-md hidden xl:inline'>
+        <SignedIn>
+          <SignOutButton/>
+        </SignedIn>
+        <SignedOut>
+          <SignInButton/>
+        </SignedOut>
+      </button>
       
     </div>
   )
