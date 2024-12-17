@@ -3,7 +3,7 @@ import React from 'react'
 const MiniProfile = () => {
   return (
     <div>
-      miniprofile
+      miniprofileee
     </div>
   )
 }
