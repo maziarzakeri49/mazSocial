@@ -1,8 +1,9 @@
 import Link from 'next/link';
-import React from 'react'
+
 import { TbLetterZ } from "react-icons/tb";
 import { HiHome } from "react-icons/hi";
-import MiniProfile from './miniProfile'
+import MiniProfile from './MiniProfile';
+
 import { SignedIn, SignedOut, SignInButton, SignOutButton } from '@clerk/nextjs';
 
 const LeftSideBar = () => {
@@ -28,8 +29,7 @@ const LeftSideBar = () => {
 
       </div>
       <SignedIn>
-        <MiniProfile/>
-        
+        <MiniProfile />
       </SignedIn>
     </div>
   )
