@@ -1,16 +1,16 @@
 import { Webhook } from 'svix'
 import { headers } from 'next/headers'
+import { createOrUpdateUser, deleteUser } from '../../../lib/actions/User'
+import { clerkClient } from '@clerk/nextjs/server'
 
 
 export async function POST(req) {
+   // You can find this in the Clerk Dashboard -> Webhooks -> choose the endpoint.
   const WEBHOOK_SECRET = process.env.WEBHOOK_SECRET
 
   if (!WEBHOOK_SECRET) {
-    throw new Error('Error: Please add SIGNING_SECRET from Clerk Dashboard to .env or .env.local')
+    throw new Error('Error: Please add WEBHOOK_SECRET from Clerk Dashboard to .env or .env.local')
   }
-
-  // Create new Svix instance with secret
-  const wh = new Webhook(WEBHOOK_SECRET)
 
   // Get headers
   const headerPayload = await headers()
@@ -27,9 +27,12 @@ export async function POST(req) {
 
   // Get body
   const payload = await req.json()
-  const body = JSON.stringify(payload)
+  const body = JSON.stringify(payload);
 
-  let evt
+  // Create new Svix instance with secret
+  const wh = new Webhook(WEBHOOK_SECRET)
+
+  let evt;
 
   // Verify payload with headers
   try {
@@ -37,7 +40,7 @@ export async function POST(req) {
       'svix-id': svix_id,
       'svix-timestamp': svix_timestamp,
       'svix-signature': svix_signature,
-    }) 
+    })
   } catch (err) {
     console.error('Error: Could not verify webhook:', err)
     return new Response('Error: Verification error', {
@@ -47,17 +50,60 @@ export async function POST(req) {
 
   // Do something with payload
   // For this guide, log payload to console
-  const { id } = evt.data
-  const eventType = evt.type
+  const { id } = evt?.data
+  const eventType = evt?.type
   console.log(`Received webhook with ID ${id} and event type of ${eventType}`)
   console.log('Webhook payload:', body)
 
-  if (eventType==='user.created'){
-    console.log('user created')
+  if (eventType === 'user.created' ||eventType=== 'user.update') {
+    const { id, first_name, last_name, image_url, email_addresses, username } = evt?.data
+    try {
+      const user = await createOrUpdateUser(
+        id,
+        first_name,
+        last_name,
+        image_url,
+        email_addresses,
+        username
+
+      );
+      if (user && eventType === 'user.created') {
+        try {
+          await clerkClient.users.updateUserMetadata(id, {
+            publicMetadata: {
+              userMongoId: user._id,
+            },
+          });
+
+        } catch (error) {
+          console.log('error updating user metadata:', error)
+
+
+        }
+
+      }
+
+    } catch (error) {
+      console.log("error creating or update user :", error);
+      return new Response('Error ocured', {
+        starus: 400,
+      });
+
+    }
   }
-  if (eventType==='user.updated'){
-    console.log('user updated')
+  if (eventType === 'user.deleted') {
+    const { id } = evt?.data
+    try {
+      await deleteUser(id);
+
+    } catch (error) {
+      console.log('Error deletting users:', error);
+      return new Response('Error ocured', {
+        starus: 400,
+      });
+
+    }
   }
 
-  return new Response('Webhook received', { status: 200 })
+  return new Response('', { status: 200 })
 }
