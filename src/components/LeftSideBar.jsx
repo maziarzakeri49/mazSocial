@@ -4,7 +4,7 @@ import { TbLetterZ } from "react-icons/tb";
 import { HiHome } from "react-icons/hi";
 import MiniProfile from './MiniProfile';
 
-import { SignedIn, SignedOut, SignInButton, SignOutButton } from '@clerk/nextjs';
+import { SignedIn, SignedOut, SignInButton, SignOutButton, } from '@clerk/nextjs';
 
 const LeftSideBar = () => {
   return (
@@ -18,14 +18,14 @@ const LeftSideBar = () => {
           <HiHome className='w-7 h-7' />
           <span className='font-bold hidden xl:inline'>Home</span>
         </Link>
-        <button className='bg-blue-400 text-white rounded-full hover:brightness-95 transition-all duration-200 w-48 h-9 shadow-md hidden xl:inline'>
-          <SignedIn>
+        <div className='bg-blue-400 text-white rounded-full  hover:brightness-95 transition-all duration-200 w-48  h-9 shadow-md hidden  font-semibold items-center justify-center md:flex'>
+          <SignedIn >
             <SignOutButton />
           </SignedIn>
           <SignedOut>
             <SignInButton />
           </SignedOut>
-        </button>
+        </div>
 
       </div>
       <SignedIn>
