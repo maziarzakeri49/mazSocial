@@ -18,8 +18,8 @@ const geistMono = localFont({
 });
 
 export const metadata = {
-  title: "Movie clone",
-  description: "i make movie website clone",
+  title: "Social app",
+  description: "i make social app clone",
 };
 export default function RootLayout({ children }) {
   return (

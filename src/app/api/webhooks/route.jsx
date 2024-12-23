@@ -11,6 +11,8 @@ export async function POST(req) {
   if (!WEBHOOK_SECRET) {
     throw new Error('Error: Please add WEBHOOK_SECRET from Clerk Dashboard to .env or .env.local')
   }
+  // Create new Svix instance with secret
+  const wh = new Webhook(WEBHOOK_SECRET)
 
   // Get headers
   const headerPayload = await headers()
@@ -29,8 +31,7 @@ export async function POST(req) {
   const payload = await req.json()
   const body = JSON.stringify(payload);
 
-  // Create new Svix instance with secret
-  const wh = new Webhook(WEBHOOK_SECRET)
+  
 
   let evt;
 
